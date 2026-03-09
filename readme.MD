@@ -3,7 +3,7 @@
 This repository explains the **common disadvantages of shell scripting** in a simple and student-friendly way.
 
 Shell scripting is very useful for automation, especially for small and quick tasks.  
-But when projects become bigger, or when we work with many servers and different environments, shell scripts start showing some limitations.
+But when projects become bigger or when we work with many servers and different environments, shell scripts start showing some limitations.
 
 ---
 
@@ -17,26 +17,6 @@ But when projects become bigger, or when we work with many servers and different
 6. [Not Idempotent](#6-not-idempotent)
 7. [Distribution Specific](#7-distribution-specific)
 8. [Conclusion](#conclusion)
-
----
-
-## What is Shell Scripting?
-
-A **shell script** is a file that contains a sequence of Linux commands.  
-Instead of typing commands one by one in the terminal, we can write them in a script and run them together.
-
-Example:
-
-```bash
-#!/bin/bash
-echo "Hello"
-mkdir /project
-cd /project
-touch test.txt
-```
-
-This makes automation easy.  
-However, shell scripting also has some important disadvantages.
 
 ---
 
@@ -85,25 +65,12 @@ if [ $? -ne 0 ]; then
 fi
 ```
 
-Or:
-
-```bash
-mkdir /data || {
-  echo "mkdir failed"
-  exit 1
-}
-```
-
 ### Why this is a disadvantage
 
 - We must write checks manually
 - Scripts become lengthy
 - Easy to forget validation
 - Hard to maintain in large scripts
-
-### Better tools
-
-Languages and tools like **Python**, **Ansible**, or **Terraform** often provide better structured error handling.
 
 ---
 
@@ -142,17 +109,6 @@ The script becomes very large and difficult to manage.
 ### Real-world issue
 
 If you want to update a package or restart a service on 100 servers, writing plain shell scripts is not the best approach.
-
-### Better tools
-
-This is why teams use tools like:
-
-- **Ansible**
-- **Puppet**
-- **Chef**
-- **Terraform** (for infrastructure provisioning)
-
-These tools are designed for **multi-server management** and large-scale automation.
 
 ---
 
@@ -279,17 +235,6 @@ Here the password is written in plain text.
 
 Passwords and secrets should never be stored openly inside scripts.
 
-### Better alternatives
-
-Use secure methods like:
-
-- **SSH keys**
-- **AWS Secrets Manager**
-- **HashiCorp Vault**
-- **Kubernetes Secrets**
-- **Environment variables** (carefully)
-- **Secret management tools**
-
 ### Important point
 
 Shell scripts can *use* secure systems, but shell scripting itself does not provide strong built-in secret management.
@@ -339,18 +284,6 @@ Second run:
 In automation, scripts may run many times.  
 If each repeated run causes errors, automation becomes unreliable.
 
-### Configuration management tools handle this better
-
-Example in Ansible:
-
-```yaml
-- name: Ensure user exists
-  user:
-    name: devops
-    state: present
-```
-
-If the user already exists, Ansible will simply say **no change**.
 
 ### Why shell scripting is weak here
 
@@ -358,70 +291,6 @@ If the user already exists, Ansible will simply say **no change**.
 - Scripts become longer
 - Easy to miss conditions
 - Repeat execution is not always safe
-
----
-
-## 7. Distribution Specific
-
-Shell scripts often depend on the Linux distribution.
-
-This means a script written for one distro may not work properly on another distro.
-
-### Example 1: Package installation
-
-Ubuntu / Debian:
-
-```bash
-apt install nginx -y
-```
-
-RHEL / CentOS:
-
-```bash
-yum install nginx -y
-```
-
-### Example 2: Service management
-
-Modern systems:
-
-```bash
-systemctl restart nginx
-```
-
-Older systems:
-
-```bash
-service nginx restart
-```
-
-### Example 3: Package names and file paths may differ
-
-Some distributions may have:
-- different package names
-- different default paths
-- different service names
-
-### Why this is a disadvantage
-
-- Script reusability becomes low
-- Maintenance effort increases
-- Testing is needed for each distro
-- One universal script is difficult to build
-
-### Important note
-
-This point is related to the **homogeneous environment** limitation, but not exactly the same.
-
-#### Difference between the two
-
-**Homogeneous Environment Only** means:
-- shell scripts work better when all systems are the same
-
-**Distribution Specific** means:
-- commands and behavior differ across Linux distributions
-
-So both are related, but the focus is slightly different.
 
 ---
 
@@ -435,7 +304,6 @@ So both are related, but the focus is slightly different.
 | Syntax is Hard | Beginners may find shell syntax confusing |
 | Weak Password Security | Secrets should not be stored in plain text |
 | Not Idempotent | Re-running scripts may produce errors |
-| Distribution Specific | Same script may not work on all Linux distros |
 
 ---
 
@@ -456,35 +324,3 @@ But it has limitations when we need:
 - idempotent automation
 - cross-platform compatibility
 - better readability and maintainability
-
-That is why DevOps teams often use:
-
-- **Shell scripting** for small and quick tasks
-- **Python** for better logic and readability
-- **Ansible / Puppet / Chef** for configuration management
-- **Terraform** for infrastructure automation
-
----
-
-## Final Student-Friendly Summary
-
-Shell scripting is powerful, but it is **not the best tool for every automation problem**.
-
-Use shell scripts when:
-- the task is simple
-- the environment is small
-- the OS is consistent
-- the logic is straightforward
-
-Avoid relying only on shell scripts when:
-- many servers are involved
-- strong security is needed
-- repeat-safe automation is required
-- multiple Linux distributions are used
-- the project is large and complex
-
----
-
-## Author Note
-
-This README is written in a simple way so that students and beginners can clearly understand the disadvantages of shell scripting.
