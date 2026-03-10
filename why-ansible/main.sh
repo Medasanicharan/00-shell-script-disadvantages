@@ -2,8 +2,8 @@ for server in $(cat servers.txt)
 do
    echo "Processing $server"
 
-   scp -i aws.pem shell-roboshop/mongo.repo shell-roboshop/mongodb.sh ec2-user@$server:/tmp/
+   scp catalogue.service catalogue.sh ec2-user@$server:/tmp/
 
-   ssh -i aws.pem ec2-user@$server "cd /tmp && sudo sh mongodb.sh"
+   ssh ec2-user@$server "cd /tmp && sudo sh catalogue.sh"
 
 done
