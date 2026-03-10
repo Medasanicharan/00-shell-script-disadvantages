@@ -1,9 +1,11 @@
-for server in $(cat servers.txt)
+#!/bin/bash
+
+while read app server
 do
-   echo "Processing $server"
+   echo "Deploying $app on $server"
 
-   scp catalogue.service catalogue.sh ec2-user@$server:/tmp/
+   scp $app.service $app.sh ec2-user@$server:/tmp/
 
-   ssh ec2-user@$server "cd /tmp && sudo sh catalogue.sh"
+   ssh ec2-user@$server "cd /tmp && sudo sh $app.sh"
 
-done
+done < servers.txt
