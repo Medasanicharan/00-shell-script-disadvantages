@@ -1,11 +1,11 @@
 #!/bin/bash
 
-while read app server
+for server in $(cat servers.txt)
 do
-   echo "Deploying $app on $server"
+   echo "Processing $server"
 
-   scp $app.service $app.sh ec2-user@$server:/tmp/
+   scp -i aws.pem shell-roboshop/mongo.repo shell-roboshop/mongodb.sh ec2-user@$server:/tmp/
 
-   ssh ec2-user@$server "cd /tmp && sudo sh $app.sh"
+   ssh -i aws.pem ec2-user@$server "cd /tmp && sudo sh mongodb.sh"
 
-done < servers.txt
+done
