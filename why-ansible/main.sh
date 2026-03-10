@@ -13,7 +13,7 @@
 for server in $(cat servers.txt)
 do
 (
-   scp -i aws.pem mongo.repo mongodb.sh ec2-user@$server:/tmp/
+   scp mongo.repo mongodb.sh ec2-user@$server:/tmp/
 
    ssh ec2-user@$server "cd /tmp && sudo sh mongodb.sh"
 ) &
